@@ -9,7 +9,7 @@ export default async function ({ req, res, log, error }) {
 
     const { data, err } = await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "issamedhamani@outlook.com",
+      to: "issam.ess556@gmail.com",
       subject: "Hello Portfolio",
       html: `
         <p><strong>Name:</strong> ${firstName} ${lastName}</p>
@@ -34,3 +34,5 @@ export default async function ({ req, res, log, error }) {
     return res.json({ success: false, error: err.message });
   }
 }
+
+
