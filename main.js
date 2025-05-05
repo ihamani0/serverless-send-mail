@@ -3,8 +3,25 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function ({ req, res, log, error }) {
-  try {
 
+  // Handle preflight OPTIONS request for CORS
+    if (req.method === 'OPTIONS') {
+    return res.send('', 204, {
+      'Access-Control-Allow-Origin': '*', // In production, specify your exact domain
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Max-Age': '86400' // 24 hours
+    });
+  }
+
+    // Set CORS headers for the actual request response
+  const headers = {
+    'Access-Control-Allow-Origin': '*', // For development - restrict this in production
+    'Content-Type': 'application/json'
+  };
+  
+  
+  try {
     // Check if API key exists
     if (!process.env.RESEND_API_KEY) {
       error("RESEND_API_KEY is not set");
@@ -32,7 +49,7 @@ export default async function ({ req, res, log, error }) {
     const { data, error: resendError } = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: "issam.ess556@gmail.com",
-      subject: "Hello Portfolio",
+      subject: "Hello from my Portfolio",
       html: `
         <p><strong>Name:</strong> ${firstName} ${lastName}</p>
         <p><strong>Phone:</strong> ${phoneNumber || 'Not provided'}</p>
